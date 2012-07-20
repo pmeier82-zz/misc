@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+# Things to do after install Ubuntu 11.4 (Natty)
+
+# Enabled partner repo
+sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
+STOP="deb "
+REPO="partner"
+sudo sed -i "/^# $STOP.*$REPO/ s/^# //" /etc/apt/sources.list
+
+# Repos
+sudo add-apt-repository ppa:chromium-daily/beta
+sudo add-apt-repository ppa:pyside
+sudo add-apt-repository ppa:pitti/postgresql
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4E5E17B5 #chromium
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 073700C1 #pyside
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8683D8A2 #postgresql
+sudo apt-get -y update && sudo apt-get dist-upgrade -y
+
+# Remove
+sudo apt-get -y autoremove gnome-games-common gbrainy #games
+sudo apt-get -y autoremove evolution-common evolution-data-server evolution-plugins evolution-webcal evolution-indicator #evolution
+sudo apt-get -y autoremove gwibber-service #gwibber
+
+# Install
+sudo apt-get -y install build-essential curl autoconf
+sudo apt-get -y install git-core subversion
+sudo apt-get -y install sqlite3 libsqlite3-dev
+sudo apt-get -y install bison openssl libreadline6 libreadline6-dev
+sudo apt-get -y install zlib1g zlib1g-dev libssl-dev libyaml-dev
+sudo apt-get -y install libxslt-dev libxml2-dev # libxml
+sudo apt-get -y install ncurses-dev
+
+# Plugins for mp3 playback and other media
+sudo apt-get -y install gstreamer0.10-ffmpeg gstreamer0.10-fluendo-mp3 gstreamer0.10-plugins-ugly
+sudo apt-get -y install flashplugin-nonfree
+
+# Python
+sudo apt-get -y install python-dev python-pip
+sudo apt-get -y install python-pyside pyside-tools
+sudo apt-get -y install python-qt4
+sudo apt-get -y install qt4-designer
+sudo pip install --upgrade pip
+sudo pip install virtualenv virtualenvwrapper
+sudo pip install sphinx
+
+# Java
+sudo apt-get -y install sun-java6-jdk
+sudo apt-get -y install eclipse
+
+# webserver etc?!
+sudo apt-get -y install apache2 mysql-server php5 phpmyadmin libmysqlclient-dev #LAMP
+sudo apt-get -y install vim-gnome exuberant-ctags # Vim
+sudo apt-get -y install postgresql-9.0 libpq-dev pgadmin3 #PostgreSQL
+
+# Android
+cd $HOME/
+wget http://dl.google.com/android/android-sdk_r13-linux_x86.tgz
+tar -xzvf android-sdk_r13-linux_x86.tgz
+cd /opt
+sudo ln -sf $HOME/android-sdk-linux_x86/ /opt/android-sdk
+
+# CleanUp
+sudo apt-get autoremove && sudo apt-get clean all && sudo apt-get autoclean all
+
+# Reminders
+echo "****************************************************************"
+echo "Go and download Dropbox  https://www.dropbox.com/downloading "
+echo "Now generate your public key using 'ssh-keygen -t rsa'"
+echo "Install RVM: bash < <(curl -s https://rvm.beginrescueend.com/install/rvm) "
+echo "****************************************************************"
